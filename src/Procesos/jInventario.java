@@ -10,8 +10,11 @@ import Clases.Encriptar;
 import Clases.EnlaceBd;
 import Clases.JCFactura;
 import Clases.JCFacturaDao;
+import Clases.LlenarCombobox;
+import Clases.PdfVO;
 import Clases.Temporal;
 import Clases.Validar;
+import Clases.imgTabla;
 import Menu.Mprincipal;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -53,7 +56,9 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -76,7 +81,7 @@ public class jInventario extends javax.swing.JInternalFrame {
         limpiarTabla();
         listarProductos();
         informacionpdf();
-        
+        llenarCategoria();
         conteoTabla();
     }
 
@@ -107,6 +112,7 @@ public class jInventario extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jCategoria = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -133,11 +139,11 @@ public class jInventario extends javax.swing.JInternalFrame {
 
         jTxtPrd.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Producto"));
         jTxtPrd.setEnabled(false);
-        jPanel4.add(jTxtPrd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 350, 50));
+        jPanel4.add(jTxtPrd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 310, 50));
 
         jStock.setBorder(javax.swing.BorderFactory.createTitledBorder("Existencia"));
         jStock.setEnabled(false);
-        jPanel4.add(jStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 153, 350, 50));
+        jPanel4.add(jStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 310, 50));
 
         BtnAgregar.setText("Nuevo");
         BtnAgregar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -147,7 +153,7 @@ public class jInventario extends javax.swing.JInternalFrame {
                 BtnAgregarActionPerformed(evt);
             }
         });
-        jPanel4.add(BtnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 560, 100, 30));
+        jPanel4.add(BtnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 560, 100, 30));
         jPanel4.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 430, 20));
 
         BtnAgregar2.setText("Modificar");
@@ -163,10 +169,10 @@ public class jInventario extends javax.swing.JInternalFrame {
         jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel4.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 530, 20, 90));
 
-        jExistenciaTotal.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        jExistenciaTotal.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10000, 1));
         jExistenciaTotal.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Total"));
         jExistenciaTotal.setEnabled(false);
-        jPanel4.add(jExistenciaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 350, 50));
+        jPanel4.add(jExistenciaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 310, 50));
 
         jSpinnerRestar.setModel(new javax.swing.SpinnerNumberModel(0, 0, 1000, 1));
         jSpinnerRestar.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Restar"));
@@ -181,7 +187,7 @@ public class jInventario extends javax.swing.JInternalFrame {
                 jSpinnerRestarPropertyChange(evt);
             }
         });
-        jPanel4.add(jSpinnerRestar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 160, 50));
+        jPanel4.add(jSpinnerRestar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 150, 50));
 
         jSpinnerSum.setModel(new javax.swing.SpinnerNumberModel(0, 0, 1000, 1));
         jSpinnerSum.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Sumar")));
@@ -196,15 +202,15 @@ public class jInventario extends javax.swing.JInternalFrame {
                 jSpinnerSumPropertyChange(evt);
             }
         });
-        jPanel4.add(jSpinnerSum, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 170, 50));
+        jPanel4.add(jSpinnerSum, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 150, 50));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 430, 620));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 370, 620));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Buscar productos"));
+        jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Buscar Productos"));
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField3KeyPressed(evt);
@@ -222,7 +228,7 @@ public class jInventario extends javax.swing.JInternalFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, 70, 80));
+        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 70, 80));
 
         jLabel1.setText("TOTAL REGISTROS");
         jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 120, -1));
@@ -230,7 +236,15 @@ public class jInventario extends javax.swing.JInternalFrame {
         jLabel2.setText("0");
         jPanel5.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 40, -1));
 
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 810, 80));
+        jCategoria.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar Categoria"));
+        jCategoria.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCategoriaItemStateChanged(evt);
+            }
+        });
+        jPanel5.add(jCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 240, 50));
+
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, 870, 80));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -258,7 +272,7 @@ public class jInventario extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 100, 810, 530));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 100, 870, 530));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 680));
 
@@ -301,6 +315,26 @@ public class jInventario extends javax.swing.JInternalFrame {
         searchThread.start();
     }//GEN-LAST:event_jTextField3KeyReleased
 
+    
+    
+    public void searchByCat(Function<String[], ArrayList<JCFactura>> searchFunction) {
+    String[] params = { jCategoria.getSelectedItem().toString() };
+
+    try {
+        // Obtener la lista de productos
+        ArrayList<JCFactura> list = searchFunction.apply(params);
+        
+        // Si la lista no está vacía, configurar la tabla
+        if (!list.isEmpty()) {
+            setupTableModel(list);
+        } else {
+            limpiarTabla(); // Limpiar la tabla si no hay resultados
+        }
+    } catch (Exception e) {
+        System.err.println("Error en searchBy: " + e.getMessage());
+    }
+}
+    
     
       
   public void searchBy(Function<String[], ArrayList<JCFactura>> searchFunction) {
@@ -529,7 +563,7 @@ if (fila == -1) {
     
     public void enableItems(){
    
-    jStock.setEnabled(true);
+  // jStock.setEnabled(true);
     jSpinnerSum.setEnabled(true);
     jSpinnerRestar.setEnabled(true);
     jExistenciaTotal.setEnabled(true);
@@ -634,9 +668,43 @@ if (fila == -1) {
           jTable1.requestFocusInWindow();
     }//GEN-LAST:event_jTable1MouseEntered
 
+    private void jCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCategoriaItemStateChanged
+        
+        
+        if(jCategoria.getSelectedIndex()!=-1){
+
+        
+
+        if(!jCategoria.getSelectedItem().equals("Todos")){
+       searchByCat(params -> new ArrayList<>(factDao.searchCategoria(params[0])));
+  
+       conteoTabla();
+       
+        jTable1.requestFocusInWindow();
+       
+
+            }
+
+            else{
+          
+          limpiarTabla();
+          listarProductos();
+          conteoTabla();
+        //  jEstado.setSelectedItem("Todos");
+          jTable1.requestFocusInWindow();
+            }
+        }
+    }//GEN-LAST:event_jCategoriaItemStateChanged
+
     
     
-           
+        
+    
+   
+  
+    
+    
+    
      public void pdf() {
          
 
@@ -1039,6 +1107,10 @@ CB.endText();
         Alinear.setHorizontalAlignment(SwingConstants.CENTER);
         
 
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
         jTable1.getColumnModel().getColumn(5).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(5).setMinWidth(0);
         jTable1.getColumnModel().getColumn(5).setPreferredWidth(0);
@@ -1047,9 +1119,9 @@ CB.endText();
         jTable1.getColumnModel().getColumn(7).setMinWidth(0);
         jTable1.getColumnModel().getColumn(7).setPreferredWidth(0);
         
-        jTable1.getColumnModel().getColumn(Tabla.findColumn("ID")).setPreferredWidth(10);
-        jTable1.getColumnModel().getColumn(Tabla.findColumn("CODIGO")).setPreferredWidth(70);
-        jTable1.getColumnModel().getColumn(Tabla.findColumn("PRODUCTOS")).setPreferredWidth(140);
+       // jTable1.getColumnModel().getColumn(Tabla.findColumn("ID")).setPreferredWidth(10);
+        jTable1.getColumnModel().getColumn(Tabla.findColumn("CODIGO")).setPreferredWidth(40);
+        jTable1.getColumnModel().getColumn(Tabla.findColumn("PRODUCTOS")).setPreferredWidth(280);
         jTable1.getColumnModel().getColumn(Tabla.findColumn("PRECIO")).setPreferredWidth(30);
         jTable1.getColumnModel().getColumn(Tabla.findColumn("CATEGORIA")).setPreferredWidth(80);
        // jTable1.getColumnModel().getColumn(Tabla.findColumn("STOCK MIN")).setPreferredWidth(40);
@@ -1058,7 +1130,7 @@ CB.endText();
         jTable1.getColumnModel().getColumn(Tabla.findColumn("ESTADO")).setPreferredWidth(30);
         jTable1.getColumnModel().getColumn(Tabla.findColumn("BARRA")).setPreferredWidth(30);
          
-        jTable1.getColumnModel().getColumn(Tabla.findColumn("ID")).setCellRenderer(Alinear);
+      //  jTable1.getColumnModel().getColumn(Tabla.findColumn("ID")).setCellRenderer(Alinear);
         jTable1.getColumnModel().getColumn(Tabla.findColumn("CODIGO")).setCellRenderer(Alinear);
         jTable1.getColumnModel().getColumn(Tabla.findColumn("PRODUCTOS")).setCellRenderer(Alinear);
         jTable1.getColumnModel().getColumn(Tabla.findColumn("PRECIO")).setCellRenderer(Alinear);
@@ -1127,6 +1199,30 @@ CB.endText();
     }
     
           
+          
+          
+          LlenarCombobox lc = new LlenarCombobox();
+        public void llenarCategoria() {
+    try {
+        jCategoria.removeAllItems(); // Limpia el combo por si acaso
+
+        // Primero agrega "Todos"
+        jCategoria.addItem("Todos");
+
+        // Luego llena con los datos reales
+        ArrayList<String> lista3 = lc.llenarCatgPrd();
+        for (int i = 0; i < lista3.size(); i++) {
+            jCategoria.addItem(lista3.get(i));
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+}
+          
+          
+          
+          
+          
             String  empresa, rif, ubicacion, telefonos, piepagina;
   public void informacionpdf() {
 
@@ -1165,6 +1261,7 @@ CB.endText();
     private javax.swing.JButton BtnAgregar2;
     private javax.swing.JLabel FechaAc2;
     private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jCategoria;
     private javax.swing.JSpinner jExistenciaTotal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

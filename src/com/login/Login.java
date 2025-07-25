@@ -333,7 +333,7 @@ catch (Exception ex){
     
     // Convertir la fecha del servidor a LocalDate para compararla
     LocalDate serverDate = fechaServidor.toLocalDate();
-    LocalDate licenseExpirationDate = LocalDate.of(2030, 1, 10);
+   // LocalDate licenseExpirationDate = LocalDate.of(2030, 1, 10);
  
     // Comprobar si la fecha del servidor es anterior a la fecha actual
     if (serverDate.isBefore(currentDate)) {
@@ -695,14 +695,13 @@ public void checkLicense() {
             
 
            
-         case 2: // Auxiliar 
-         
-           if(especialidad != null && especialidad.equals("Administrativo")){
+         case 3: // Auxiliar 
+          
               configAuxAdmins(ad);
               ad.setLocationRelativeTo(null);
               ad.setVisible(true);
               dispose();
-             }
+             
 
             break;
             
@@ -737,21 +736,25 @@ public void checkLicense() {
     ad.jMenuRestauracion.setEnabled(true);
     ad.TxtRol.setText("Administrador");
     ad.TxtRol1.setText(nivelUsuario);
+    ad.jCompras.setEnabled(true);
+ 
+   // ad.jGastos.setEnabled(true);
 
+    ad.jProveedores.setEnabled(true);
     ad.jMenAdmin.setVisible(true);
     ad.jMenAdmin.setEnabled(true);
     ad.JEmpresa.setEnabled(true);
     ad.jOnline.setEnabled(true);
     ad.jMenuPassword.setEnabled(true);
     ad.jMenuDivisa.setEnabled(true);
+    
     ad.jMenuFactura.setVisible(true);
     ad.jMenuFactura.setEnabled(true);
+    
     ad.jMenuSeguridad.setEnabled(true);
     ad.jCfacturas.setVisible(true);
     ad.jCfacturas.setEnabled(true);
     ad.jMinventario.setVisible(true);
-
-
     ad.jMinventario.setEnabled(true);
   
 }
@@ -783,11 +786,15 @@ public void checkLicense() {
     ad.IDEspecialidad.setText(idEspecialidad);
 
     ad.JMreportes.setEnabled(true);
-    ad.JMreportes.setEnabled(true);
-    
+    ad.JMenuCliente.setEnabled(true);
+    ad.jMenuFactura.setVisible(true);
+    ad.jCfacturas.setVisible(true);
+    ad.jMenuFactura.setEnabled(true);
+    ad.jCfacturas.setEnabled(true);
     
     //QUITAR PERMISOS
- 
+    
+    ad.jProveedores.setEnabled(false);
     ad.TxtUser.setVisible(false);
     ad.JMuser.setEnabled(false);
     ad.jMenuConfiguracion.setEnabled(false);

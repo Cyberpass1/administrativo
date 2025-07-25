@@ -15,7 +15,6 @@ import Clases.factGlobal;
 import Clases.imgTabla;
 import Clases.reporteFact;
 import Clases.vGraficasHono;
-import Consultas.ConsultaLaboratorio.CustomPieSectionLabelGenerator;
 import Menu.Mprincipal;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -68,6 +67,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
@@ -97,27 +97,47 @@ public class ConsultaFacturas extends javax.swing.JInternalFrame {
     private String Nivel, nivelUsuario;
     private Thread searchThread;
     private final int DELAY = 500;
-    public ConsultaFacturas() {
-        initComponents();
-        ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
-         Calendar Fecha = new GregorianCalendar();
-         FechaOne.setCalendar(Fecha);
-         FechaTwo.setCalendar(Fecha);    
-         informacionpdf();
-         JRpaciente.setSelected(true);   
-         visualizar_PdfVO(Jtabla);
-         conteoTabla();
-         Jtabla.getTableHeader().setReorderingAllowed(false);
-         DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) Jtabla.getTableHeader().getDefaultRenderer();
-         headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-         
-         Nivel=Tempo.getNivel();
-         // nivelUsuario=Nivel+" "+especialidad;
-         
-         
-         
-         Jtabla.requestFocusInWindow();
-    }
+  public ConsultaFacturas() {
+    initComponents();
+    ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
+    
+    Calendar Fecha = new GregorianCalendar();
+    FechaOne.setCalendar(Fecha);
+    FechaTwo.setCalendar(Fecha);    
+    
+    JRpaciente.setSelected(true);   
+    Jtabla.getTableHeader().setReorderingAllowed(false);
+
+    DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) Jtabla.getTableHeader().getDefaultRenderer();
+    headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+    Nivel = Tempo.getNivel();
+
+    Jtabla.requestFocusInWindow();
+
+    // Carga pesada en segundo plano
+    cargarDatosEnSegundoPlano();
+}
+  
+  private void cargarDatosEnSegundoPlano() {
+    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+        @Override
+        protected Void doInBackground() throws Exception {
+            informacionpdf();          // Carga de información
+            visualizar_PdfVO(Jtabla);  // Población de la tabla
+            conteoTabla();             // Conteo de filas
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            // Opcional: acciones después de cargar
+        }
+    };
+    worker.execute();
+}
+
+  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -480,7 +500,13 @@ visualizar_PdfVO(Jtabla);
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         
+        
+        
         if(Jtabla.getRowCount()<=0){  JOptionPane.showMessageDialog(null, "La tabla se encuentra vacia", "TABLA VACIA", JOptionPane.ERROR_MESSAGE);  }
+        
+       else  if(!Nivel.equals("Administrador")   ){
+        JOptionPane.showMessageDialog(this, "PERMISO INSUFICIENTE PARA VER REPORTES", "ESTADISTICA", JOptionPane.ERROR_MESSAGE);
+       }
         
         else if(jEstadistica.getSelectedItem().equals("Seleccionar Estadistica")){
 
@@ -538,7 +564,7 @@ visualizar_PdfVO(Jtabla);
    try{
        
        //private String Nivel, nivelUsuario;  
-       if(Nivel.equals("Administrador")){
+       if(Nivel.equals("Administrador") ||  Nivel.equals("Aux.")){
     
         int column = Jtabla.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY() / Jtabla.getRowHeight();
@@ -584,7 +610,7 @@ visualizar_PdfVO(Jtabla);
        
        
        else{
-       JOptionPane.showMessageDialog(null,"NO CUENTA CON PERMISOS SUFICIENTES PARA VER HISTORIAS", "HISTORIAS", JOptionPane.ERROR_MESSAGE);
+       JOptionPane.showMessageDialog(null,"NO CUENTA CON PERMISOS SUFICIENTES PARA VER REPORTES", "HISTORIAS", JOptionPane.ERROR_MESSAGE);
        }
    }catch(Exception e){ 
    System.out.println(e);
@@ -2211,12 +2237,12 @@ public void pdfbyDetails() {
         // Tabla con 7 columnas
         PdfPTable table = new PdfPTable(9);
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{3f, 5f, 6f, 2f, 2f, 2f, 2f, 2f ,3f});
+        table.setWidths(new float[]{2f, 5f, 6f, 2f, 2f, 2f, 2f, 2f ,3f});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
 
         // Encabezados
-        String[] headers = {"Factura", "Cliente", "Producto", "Cantidad", "Costo Unit", "Costo Tot.","Ref Unit","Ref Tot.", "Fecha"};
+        String[] headers = {"ID", "Cliente", "Producto", "Cantidad", "Costo Unit", "Costo Tot.","Ref Unit","Ref Tot.", "Fecha"};
         for (String header : headers) {
             PdfPCell cell = new PdfPCell(new Paragraph(header, fontSmall));
             cell.setBorder(Rectangle.NO_BORDER);
@@ -2344,37 +2370,42 @@ public Map<String, List<reporteFact>> knowDetails() {
     String fecha1 = new SimpleDateFormat("yyyy-MM-dd").format(FechaOne.getDate());
     String fecha2 = new SimpleDateFormat("yyyy-MM-dd").format(FechaTwo.getDate());
 
-    final double TASA_DOLAR = 108.0;
 
     String sql = "SELECT \n" +
 "    u.id_factura,\n" +
 "    CONCAT(cliente.Nombre, ' ', cliente.Apellido) AS Cliente,\n" +
-"    p.producto,\n" +
-"    c.Catg_Prd,\n" +
+"    COALESCE(p.producto, s.servicio, '[NO DATA]') AS Nombre_Item,\n" +
+"    COALESCE(c.Catg_Prd, cs.Catg_Servicio) AS Categoria,\n" +
 "    m.moneda,\n" +
 "    SUM(u.cantidad) AS total_cantidad,\n" +
-"    Precio_Unit,\n" +
-"    Precio_Total,\n" +
-"    Precio_UnitBsf,\n" +
-"    Precio_TotalBsf,\n" +
+"    u.Precio_Unit,\n" +
+"    u.Precio_Total,\n" +
+"    u.Precio_UnitBsf,\n" +
+"    u.Precio_TotalBsf,\n" +
 "    f.fecha_fact,\n" +
- "   f.estado_fact\n" +
-"\n" +
+"    f.estado_fact\n" +
 "FROM table_factdetail u\n" +
 "INNER JOIN table_facturacion f ON u.id_factura = f.id_factura\n" +
-"INNER JOIN table_productos p ON u.producto = p.code_prd\n" +
-"INNER JOIN categorias_productos c ON p.id_catgPrd = c.id_ctgPrd\n" +
-"INNER JOIN moneda_pago m ON f.metodo_pago = m.id_moneda\n" +
-"INNER JOIN table_paciente cliente ON f.id_paciente = cliente.Idpaciente\n" +
-"WHERE f.estado_fact <> 104   AND f.fecha_fact BETWEEN ? AND ?\n" +
+"LEFT JOIN table_productos p ON u.producto = p.code_prd\n" +
+"LEFT JOIN categorias_productos c ON p.id_catgPrd = c.id_ctgPrd\n" +
+"LEFT JOIN table_servicios s ON TRIM(u.producto) = TRIM(s.serv_codigo)\n" +
+"LEFT JOIN categorias_servicios cs ON s.serv_categoria = cs.Id_CatgServ\n" +
+"LEFT JOIN moneda_pago m ON f.metodo_pago = m.id_moneda\n" +
+"LEFT JOIN table_paciente cliente ON f.id_paciente = cliente.Idpaciente\n" +
+"WHERE f.estado_fact <> 104 \n" +
+"  AND f.fecha_fact BETWEEN ? AND ?\n" +
 "GROUP BY \n" +
 "    u.id_factura,\n" +
 "    Cliente,\n" +
-"    p.producto,\n" +
-"    c.Catg_Prd,\n" +
-"    m.moneda, \n" +
-"    f.fecha_fact, \n" +
-"    f.estado_fact \n" +
+"    Nombre_Item,\n" +
+"    Categoria,\n" +
+"    m.moneda,\n" +
+"    u.Precio_Unit,\n" +
+"    u.Precio_Total,\n" +
+"    u.Precio_UnitBsf,\n" +
+"    u.Precio_TotalBsf,\n" +
+"    f.fecha_fact,\n" +
+"    f.estado_fact\n" +
 "ORDER BY u.id_factura ASC;";
 
     try (Connection con = new EnlaceBd().getConnection();
@@ -2387,7 +2418,7 @@ public Map<String, List<reporteFact>> knowDetails() {
             while (rs.next()) {
                 String idFact = rs.getString("id_factura");
                 String cliente = rs.getString("Cliente");
-                String producto = rs.getString("producto");
+                String producto = rs.getString("Nombre_Item");
                 int cant = rs.getInt("total_cantidad");
                 String moneda = rs.getString("moneda");
 
@@ -2405,7 +2436,7 @@ public Map<String, List<reporteFact>> knowDetails() {
                     idFact,
                     cliente,
                     producto,
-                    rs.getString("Catg_Prd"),
+                    rs.getString("Categoria"),
                     cant,
                     moneda,
                     precioUnit,

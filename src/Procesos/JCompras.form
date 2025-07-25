@@ -149,7 +149,6 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTxtFindMouseEntered"/>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTxtFindKeyReleased"/>
           </Events>
           <Constraints>
@@ -160,10 +159,10 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtCedula">
           <Properties>
-            <Property name="text" type="java.lang.String" value="V-"/>
+            <Property name="text" type="java.lang.String" value="J-"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="C.I CLIENTE">
+                <TitledBorder title="PROVEEDOR">
                   <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder/>
                   </Border>
@@ -394,7 +393,7 @@
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jradioEntregaBsf">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="NOTA DE ENTREGA"/>
+                    <Property name="text" type="java.lang.String" value="COMPRA"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jradioEntregaBsfActionPerformed"/>
@@ -407,7 +406,7 @@
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jradioBsf">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="FACTURA"/>
+                    <Property name="text" type="java.lang.String" value="GASTO"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jradioBsfActionPerformed"/>
@@ -615,7 +614,7 @@
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jradioDlrs">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="FACTURA"/>
+                    <Property name="text" type="java.lang.String" value="GASTO"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jradioDlrsActionPerformed"/>
@@ -628,7 +627,7 @@
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jradioDls">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="NOTA DE ENTREGA"/>
+                    <Property name="text" type="java.lang.String" value="COMPRA"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jradioDlsActionPerformed"/>
@@ -873,7 +872,7 @@
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jradioMixto">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="FACTURA"/>
+                    <Property name="text" type="java.lang.String" value="GASTO"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jradioMixtoActionPerformed"/>
@@ -886,7 +885,7 @@
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jradioEntrega">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="NOTA DE ENTREGA"/>
+                    <Property name="text" type="java.lang.String" value="COMPRA"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jradioEntregaActionPerformed"/>
@@ -1610,7 +1609,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="FACTURA:"/>
+            <Property name="text" type="java.lang.String" value="COMPRA:"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

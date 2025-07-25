@@ -298,6 +298,50 @@ public List<JCFactura> listarServicios() {
         
 
         
+  public List searchCategoria(String producto) {
+     Connection con=null;
+    EnlaceBd cn = new EnlaceBd();
+    PreparedStatement ps=null;
+    ResultSet rs=null;
+    
+        List<JCFactura> lista = new ArrayList<>();
+        String sql = "SELECT id_producto, code_prd, producto, precio, existencia, stockmin, stockmax, c.Catg_Prd, e.estado, estadoPrd, serial_barra " +
+             "FROM table_productos u " +
+             "INNER JOIN table_estado e ON u.estadoPrd = e.IdEstado " +
+             "INNER JOIN categorias_productos c ON u.id_catgPrd = c.id_ctgPrd " +
+             "WHERE  c.Catg_Prd = ? " +
+             "ORDER BY u.id_producto ASC";
+  
+        
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, producto );
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                
+                JCFactura f =  new JCFactura();
+                f.setIdproducto(rs.getInt(1));
+                f.setCodeproducto(rs.getString(2));
+                f.setProducto(rs.getString(3));
+                f.setPrecioPrd(rs.getString(4));
+                f.setExistencia(rs.getInt(5));
+                f.setStockmin(rs.getInt(6));
+                f.setStockmax(rs.getInt(7));
+                f.setCtgProducto(rs.getString(8));
+                f.setStatePrd(rs.getString(9));
+                f.setCode_barra(rs.getString(11));
+     
+                lista.add(f);
+            }
+        } catch (Exception e) {System.err.println("Error al conectar "+ e);
+        }
+        
+        finally {
+            closeResources(rs, ps, con);
+        }
+        return lista;
+    }
           
         public List listarCatgPrd() {
         List<JCFactura> lista = new ArrayList<>();

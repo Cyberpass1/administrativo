@@ -10,8 +10,6 @@ import Clases.EnlaceBd;
 import Clases.JCEspecialidadDao;
 import Clases.JCEspecialidades;
 import Clases.JCPacientes;
-import Clases.JCProcedimientos;
-import Clases.JCProcedimientosDao;
 import Clases.JCambiarState;
 import Clases.Temporal;
 import Clases.Validar;

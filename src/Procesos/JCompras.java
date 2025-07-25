@@ -96,12 +96,12 @@ import org.apache.pdfbox.pdmodel.PDPageable;
  *
  * @author FCGinebraI
  */
-public class JFacturacion extends javax.swing.JInternalFrame {
+public class JCompras extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form JUREGISTRO
      */
-public JFacturacion() {
+public JCompras() {
     initComponents();
     ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
 
@@ -275,11 +275,6 @@ private void cargarDatosEnSegundoPlano() {
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 960, 130));
 
         jTxtFind.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar servicio/producto"));
-        jTxtFind.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jTxtFindMouseEntered(evt);
-            }
-        });
         jTxtFind.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTxtFindKeyReleased(evt);
@@ -287,8 +282,8 @@ private void cargarDatosEnSegundoPlano() {
         });
         jPanel1.add(jTxtFind, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 440, 40));
 
-        jTxtCedula.setText("V-");
-        jTxtCedula.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "C.I CLIENTE"));
+        jTxtCedula.setText("J-");
+        jTxtCedula.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "PROVEEDOR"));
         jTxtCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTxtCedulaActionPerformed(evt);
@@ -395,7 +390,7 @@ private void cargarDatosEnSegundoPlano() {
         });
         jPanel2.add(jTransferenciaBs, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 20, -1, -1));
 
-        jradioEntregaBsf.setText("NOTA DE ENTREGA");
+        jradioEntregaBsf.setText("COMPRA");
         jradioEntregaBsf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jradioEntregaBsfActionPerformed(evt);
@@ -403,7 +398,7 @@ private void cargarDatosEnSegundoPlano() {
         });
         jPanel2.add(jradioEntregaBsf, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 10, -1, -1));
 
-        jradioBsf.setText("FACTURA");
+        jradioBsf.setText("GASTO");
         jradioBsf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jradioBsfActionPerformed(evt);
@@ -499,7 +494,7 @@ private void cargarDatosEnSegundoPlano() {
         });
         jPanel4.add(jTransfD, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 20, -1, -1));
 
-        jradioDlrs.setText("FACTURA");
+        jradioDlrs.setText("GASTO");
         jradioDlrs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jradioDlrsActionPerformed(evt);
@@ -507,7 +502,7 @@ private void cargarDatosEnSegundoPlano() {
         });
         jPanel4.add(jradioDlrs, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 30, -1, -1));
 
-        jradioDls.setText("NOTA DE ENTREGA");
+        jradioDls.setText("COMPRA");
         jradioDls.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jradioDlsActionPerformed(evt);
@@ -620,7 +615,7 @@ private void cargarDatosEnSegundoPlano() {
         });
         jPanel9.add(jZelleMix, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 50, -1, -1));
 
-        jradioMixto.setText("FACTURA");
+        jradioMixto.setText("GASTO");
         jradioMixto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jradioMixtoActionPerformed(evt);
@@ -628,7 +623,7 @@ private void cargarDatosEnSegundoPlano() {
         });
         jPanel9.add(jradioMixto, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 30, -1, -1));
 
-        jradioEntrega.setText("NOTA DE ENTREGA");
+        jradioEntrega.setText("COMPRA");
         jradioEntrega.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jradioEntregaActionPerformed(evt);
@@ -877,7 +872,7 @@ private void cargarDatosEnSegundoPlano() {
         jLabel1.setForeground(new java.awt.Color(0, 0, 102));
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 10, 240, 30));
 
-        jLabel2.setText("FACTURA:");
+        jLabel2.setText("COMPRA:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 10, -1, 30));
 
         jScrollPane8.setViewportView(textPane);
@@ -1038,7 +1033,7 @@ for (int i = 0; i < rowCount; i++) {
 if (exists) {
     JOptionPane.showMessageDialog(null, "NO PUEDEN EXISTIR ELEMENTOS REPETIDOS EN LA FACTURA", "FACTURA", JOptionPane.ERROR_MESSAGE);
 } else if (jTextServ.getText().equals("")) {
-    JOptionPane.showMessageDialog(null, "EL CAMPO DE SERVICIO/PRODUCTO NO PUEDE ESTAR VACIO", "FACTURA", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(null, "EL CAMPO DE SERVICIO NO PUEDE ESTAR VACIO", "FACTURA", JOptionPane.ERROR_MESSAGE);
 } 
 else if (jLabel1.getText().equals("")){
   JOptionPane.showMessageDialog(null, "DEBE ASIGNAR UN CLIENTE A UNA FACTURA", "FACTURA", JOptionPane.ERROR_MESSAGE);
@@ -1927,9 +1922,9 @@ public void Search() {
                 Callpacient();
                 jTtxtPrecio.setEditable(true);
             } catch (PrinterException ex) {
-                Logger.getLogger(JFacturacion.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JCompras.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(JFacturacion.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JCompras.class.getName()).log(Level.SEVERE, null, ex);
             }
      
          } 
@@ -1995,7 +1990,7 @@ public void Search() {
     }//GEN-LAST:event_jTable2MouseClicked
 private Timer typingTimer;
     private void jTxtFindKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxtFindKeyReleased
-            if (typingTimer != null) {
+                   if (typingTimer != null) {
         typingTimer.stop();
     }
 
@@ -2303,10 +2298,6 @@ if (esCaracterValido) {
     evt.consume();
 }
     }//GEN-LAST:event_jTtxtPrecioKeyTyped
-
-    private void jTxtFindMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTxtFindMouseEntered
-         jTxtFind.requestFocusInWindow();
-    }//GEN-LAST:event_jTxtFindMouseEntered
 
     
     
@@ -2698,7 +2689,7 @@ else{
 
      
      
-  public JFacturacion(JTextPane textPane, JTable jTable2, JTextField jTextField20, JTextField jTextField21, JTextField jTextField18) {
+  public JCompras(JTextPane textPane, JTable jTable2, JTextField jTextField20, JTextField jTextField21, JTextField jTextField18) {
         this.textPane = textPane;
         this.jTable2 = jTable2;
         this.jTxtSubBS = jTextField20;

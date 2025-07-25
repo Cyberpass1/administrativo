@@ -8,21 +8,20 @@ import Clases.Temporal;
 import Consultas.ConsultaFacturas;
 import Consultas.ConsultaPacientes;
 import Consultas.ConsultaUsers;
+import Procesos.JCompras;
 import Procesos.JFacturacion;
 import Procesos.jInventario;
 import Registros.JAuditoria;
 import Registros.JCategoriaProductos;
 import Registros.JCategoriaServ;
 import Registros.JConfigEmpresas;
-import Registros.JDiagnostico;
-import Registros.JEspecialidades; 
-import Registros.JHorariosDoctores; 
+import Registros.JGastos;
 import Registros.JOnline;
 import Registros.JPacientes;
 import Registros.JPacientesPCP;
 import Registros.JPermisos;
-import Registros.JProcedimientos;
 import Registros.JProductos;
+import Registros.JProveedores;
 import Registros.JSeguridad;
 import Registros.JServicios;
 import Registros.JUregistro;
@@ -36,6 +35,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -199,14 +199,17 @@ public void hora(){
         jMenuRegistros = new javax.swing.JMenu();
         JMuser = new javax.swing.JMenuItem();
         JMenuCliente = new javax.swing.JMenuItem();
+        jProveedores = new javax.swing.JMenuItem();
         jMenAdmin = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem21 = new javax.swing.JMenuItem();
         jMenCtgPrd = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuProcesos = new javax.swing.JMenu();
         jMinventario = new javax.swing.JMenuItem();
         jMenuFactura = new javax.swing.JMenuItem();
+        jCompras = new javax.swing.JMenuItem();
         JMreportes = new javax.swing.JMenu();
         jCfacturas = new javax.swing.JMenuItem();
         jConsPac = new javax.swing.JMenuItem();
@@ -484,6 +487,15 @@ public void hora(){
         });
         jMenuRegistros.add(JMenuCliente);
 
+        jProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/supplier (1).png"))); // NOI18N
+        jProveedores.setText("Proveedores");
+        jProveedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jProveedoresActionPerformed(evt);
+            }
+        });
+        jMenuRegistros.add(jProveedores);
+
         jMenAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/administrar.png"))); // NOI18N
         jMenAdmin.setText("Administrativo");
         jMenAdmin.setEnabled(false);
@@ -524,6 +536,15 @@ public void hora(){
         });
         jMenAdmin.add(jMenCtgPrd);
 
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/spending.png"))); // NOI18N
+        jMenuItem7.setText("Gastos");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenAdmin.add(jMenuItem7);
+
         jMenuRegistros.add(jMenAdmin);
 
         jMenuBar1.add(jMenuRegistros);
@@ -549,6 +570,16 @@ public void hora(){
             }
         });
         jMenuProcesos.add(jMenuFactura);
+
+        jCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/grocery-store.png"))); // NOI18N
+        jCompras.setText("Compras & Gastos");
+        jCompras.setEnabled(false);
+        jCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComprasActionPerformed(evt);
+            }
+        });
+        jMenuProcesos.add(jCompras);
 
         jMenuBar1.add(jMenuProcesos);
 
@@ -1377,6 +1408,77 @@ else{
         Temporal tm = new Temporal();
         tm.setIdEspecialidad(Integer.parseInt(IDEspecialidad.getText().trim()));
     }//GEN-LAST:event_IDEspecialidadCaretUpdate
+
+    private void jComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComprasActionPerformed
+
+        
+        
+        JMenu.setSelectedIndex(1);
+
+
+       JCompras ir = new JCompras();
+       ir.setClosable(true);
+       ir.setIconifiable(true);
+
+       try {
+       ir.setMaximum(true);  
+       } catch (PropertyVetoException e) {
+       e.printStackTrace();  
+       }
+
+
+       JDesktopMenu.setVisible(true);
+       JDesktopMenu.add(ir);
+       ir.setVisible(true);
+       ir.toFront();
+       this.setLocationRelativeTo(null);
+        
+        //    JOptionPane.showMessageDialog(null, "MÓDULO EN CONSTRUCCIÓN | PRÓXIMAMENTE", "MÓDULO", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jComprasActionPerformed
+
+    private void jProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jProveedoresActionPerformed
+     JMenu.setSelectedIndex(1);
+
+
+       JProveedores ir = new JProveedores();
+       ir.setClosable(true);
+       ir.setIconifiable(true);
+
+       try {
+       ir.setMaximum(true);  
+       } catch (PropertyVetoException e) {
+       e.printStackTrace();  
+       }
+
+
+       JDesktopMenu.setVisible(true);
+       JDesktopMenu.add(ir);
+       ir.setVisible(true);
+       ir.toFront();
+       this.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jProveedoresActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+  JMenu.setSelectedIndex(1);
+
+
+       JGastos ir = new JGastos();
+       ir.setClosable(true);
+       ir.setIconifiable(true);
+
+       try {
+       ir.setMaximum(true);  
+       } catch (PropertyVetoException e) {
+       e.printStackTrace();  
+       }
+
+
+       JDesktopMenu.setVisible(true);
+       JDesktopMenu.add(ir);
+       ir.setVisible(true);
+       ir.toFront();
+       this.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
  
 
     
@@ -1776,6 +1878,7 @@ private static void updateLastLogin(int userId) {
     public javax.swing.JTextField Txtentrada;
     public javax.swing.JTextArea Txtinfo;
     public javax.swing.JMenuItem jCfacturas;
+    public javax.swing.JMenuItem jCompras;
     public javax.swing.JMenuItem jConsPac;
     public javax.swing.JLabel jLabel102;
     public javax.swing.JLabel jLabel104;
@@ -1804,6 +1907,7 @@ private static void updateLastLogin(int userId) {
     private javax.swing.JMenuItem jMenuItem3;
     public javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     public javax.swing.JMenuItem jMenuItem9;
     public javax.swing.JMenuItem jMenuPassword;
@@ -1820,6 +1924,7 @@ private static void updateLastLogin(int userId) {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    public javax.swing.JMenuItem jProveedores;
     private javax.swing.JScrollPane jScrollPane1;
     private org.edisoncor.gui.panel.PanelImage panelImage2;
     // End of variables declaration//GEN-END:variables

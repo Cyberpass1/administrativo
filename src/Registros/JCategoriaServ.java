@@ -12,8 +12,6 @@ import Clases.JCEspecialidades;
 import Clases.JCFactura;
 import Clases.JCFacturaDao;
 import Clases.JCPacientes;
-import Clases.JCProcedimientos;
-import Clases.JCProcedimientosDao;
 import Clases.JCambiarState;
 import Clases.Temporal;
 import Clases.Validar;
@@ -265,7 +263,7 @@ listarEspecialidades();
  int row = JTableEspecialidad.getRowCount();
     Object[] content = new Object[row];
     for (int i = 0; i < row; i++) {
-        content[i] = JTableEspecialidad.getValueAt(i, 2);
+        content[i] = JTableEspecialidad.getValueAt(i, 1);
     }
     Object value_to_find= TxtEspecialidad.getText();
     boolean exist = Arrays.asList(content).contains(value_to_find);

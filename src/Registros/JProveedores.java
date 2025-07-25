@@ -8,9 +8,11 @@ package Registros;
 import Clases.Encriptar;
 import Clases.EnlaceBd;
 import Clases.JCPacientes;
+import Clases.JCambiarState;
 import Clases.JPacientesDao;
 import Clases.Temporal;
 import Clases.Validar;
+import Clases.jProveedores;
 import Menu.Mprincipal;
 import Procesos.JAsignarPaciente;
 import com.itextpdf.text.BaseColor;
@@ -81,16 +83,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author FCGinebraI
  */
-public class JPacientesPCP extends javax.swing.JInternalFrame {
+public class JProveedores extends javax.swing.JInternalFrame {
 
   
     
-    int idPaciente;
+    int idProveedor;
     
     
     
     
-    public JPacientesPCP() {
+    public JProveedores() {
         
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
@@ -98,11 +100,11 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
 
        
         limpiarTabla();
-        listarPacientes();
+        listarProveedores();
         
    
-        this.JRMasculino.setSelected(true);
-        acomodarceldas();
+    
+ 
         conteoTablatotal();
 
         
@@ -113,7 +115,7 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
              Eliminar.setEnabled(true); 
     
          }
-
+ 
          
     //   BtnLimpiar1.setVisible(false);
         
@@ -154,7 +156,8 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         AsignarOrden = new javax.swing.JPopupMenu();
-        Orden = new javax.swing.JMenuItem();
+        Desactivar = new javax.swing.JMenuItem();
+        Activar = new javax.swing.JMenuItem();
         Eliminar = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -165,9 +168,6 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         TXTPtelefono = new javax.swing.JFormattedTextField();
-        jPanel5 = new javax.swing.JPanel();
-        JRMasculino = new javax.swing.JRadioButton();
-        JRfemenino = new javax.swing.JRadioButton();
         BtnAgregar = new javax.swing.JButton();
         BtnModificar = new javax.swing.JButton();
         BtnLimpiar = new javax.swing.JButton();
@@ -177,27 +177,34 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
         jSeparator6 = new javax.swing.JSeparator();
         TXTPcedula = new javax.swing.JTextField();
         TXTPcorreo = new javax.swing.JTextField();
-        TXTPapellido = new javax.swing.JTextField();
+        jCategoria = new javax.swing.JComboBox<>();
         jPanel8 = new javax.swing.JPanel();
         TXTBcedula = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        JTablePaciente = new javax.swing.JTable();
+        JTableProveedor = new javax.swing.JTable();
 
-        Orden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/delegar_1.png"))); // NOI18N
-        Orden.setText("Asignar estudio");
-        Orden.setActionCommand("Asignar Orden");
-        Orden.addActionListener(new java.awt.event.ActionListener() {
+        Desactivar.setText("Inactivar");
+        Desactivar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OrdenActionPerformed(evt);
+                DesactivarActionPerformed(evt);
             }
         });
-        AsignarOrden.add(Orden);
+        AsignarOrden.add(Desactivar);
 
-        Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/basura.png"))); // NOI18N
-        Eliminar.setText("Eliminar Paciente");
+        Activar.setText("Activar");
+        Activar.setToolTipText("");
+        Activar.setActionCommand("Asignar Orden");
+        Activar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActivarActionPerformed(evt);
+            }
+        });
+        AsignarOrden.add(Activar);
+
+        Eliminar.setText("Eliminar");
         Eliminar.setToolTipText("");
         Eliminar.setEnabled(false);
         Eliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -219,16 +226,16 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
 
         FechaAc2.setBackground(new java.awt.Color(0, 0, 0));
         FechaAc2.setFont(new java.awt.Font("Arial Narrow", 1, 18)); // NOI18N
-        FechaAc2.setText("M Ó D U L O      C L I E N T E S");
-        jPanel2.add(FechaAc2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 260, -1));
+        FechaAc2.setText("M Ó D U L O      P R O V E E D O R E S");
+        jPanel2.add(FechaAc2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 280, -1));
 
-        TXTPnombre.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Nombre")));
+        TXTPnombre.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Razón Social")));
         TXTPnombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TXTPnombreKeyTyped(evt);
             }
         });
-        jPanel2.add(TXTPnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 200, 50));
+        jPanel2.add(TXTPnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 340, 50));
 
         TXTPdireccion.setColumns(20);
         TXTPdireccion.setLineWrap(true);
@@ -241,7 +248,7 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(TXTPdireccion);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 420, -1));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 340, -1));
         jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, -1, -1));
         jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 500, -1));
 
@@ -251,31 +258,7 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jPanel2.add(TXTPtelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 200, 200, 50));
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Sexo"));
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        JRMasculino.setBackground(new java.awt.Color(255, 255, 255));
-        JRMasculino.setText("Masculino");
-        JRMasculino.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JRMasculinoActionPerformed(evt);
-            }
-        });
-        jPanel5.add(JRMasculino, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
-
-        JRfemenino.setBackground(new java.awt.Color(255, 255, 255));
-        JRfemenino.setText("Femenino");
-        JRfemenino.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JRfemeninoActionPerformed(evt);
-            }
-        });
-        jPanel5.add(JRfemenino, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, -1, -1));
-
-        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, 200, 50));
+        jPanel2.add(TXTPtelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 170, 50));
 
         BtnAgregar.setText("Agregar");
         BtnAgregar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -296,7 +279,7 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
                 BtnModificarActionPerformed(evt);
             }
         });
-        jPanel2.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 540, 100, 30));
+        jPanel2.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 540, 100, 30));
 
         BtnLimpiar.setText("Nuevo");
         BtnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -306,43 +289,38 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
                 BtnLimpiarActionPerformed(evt);
             }
         });
-        jPanel2.add(BtnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 540, 100, 30));
+        jPanel2.add(BtnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 540, 100, 30));
         jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, -1, -1));
         jPanel2.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 500, 20));
 
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel2.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 520, 10, 70));
+        jPanel2.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 520, 10, 70));
 
         jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel2.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 520, 10, 70));
+        jPanel2.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 520, 10, 70));
 
-        TXTPcedula.setText("V-");
-        TXTPcedula.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Cédula")));
+        TXTPcedula.setText("J-");
+        TXTPcedula.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0))), "RIF | CI"));
         TXTPcedula.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TXTPcedulaKeyTyped(evt);
             }
         });
-        jPanel2.add(TXTPcedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 200, 50));
+        jPanel2.add(TXTPcedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 340, 50));
 
-        TXTPcorreo.setText("CyberiaBackup2024@gmail.com");
         TXTPcorreo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Correo")));
         TXTPcorreo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TXTPcorreoKeyTyped(evt);
             }
         });
-        jPanel2.add(TXTPcorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 200, 50));
+        jPanel2.add(TXTPcorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 170, 50));
 
-        TXTPapellido.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Apellido")));
-        TXTPapellido.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                TXTPapellidoKeyTyped(evt);
-            }
-        });
-        jPanel2.add(TXTPapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 200, 50));
+        jCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Compra", "Gasto" }));
+        jCategoria.setBorder(javax.swing.BorderFactory.createTitledBorder("Categoria"));
+        jPanel2.add(jCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 340, 50));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 460, 590));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 430, 590));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -365,7 +343,7 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
         jLabel2.setText("0");
         jPanel8.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 50, 40, -1));
 
-        jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 780, 80));
+        jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 820, 80));
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 51));
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -374,23 +352,23 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
-        JTablePaciente.setModel(new javax.swing.table.DefaultTableModel(
+        JTableProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "NOMBRE", "APELLIDO", "CEDULA", "TELEFONO", "CORREO", "DIRECCIÓN", "SEXO"
+                "ID", "RAZÓN", "CATEGORIA", "RIF | CI", "TELEFONO", "CORREO", "DIRECCIÓN", "ESTADO"
             }
         ));
-        JTablePaciente.setComponentPopupMenu(AsignarOrden);
-        JTablePaciente.addMouseListener(new java.awt.event.MouseAdapter() {
+        JTableProveedor.setComponentPopupMenu(AsignarOrden);
+        JTableProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JTablePacienteMouseClicked(evt);
+                JTableProveedorMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(JTablePaciente);
+        jScrollPane1.setViewportView(JTableProveedor);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 780, 500));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 820, 500));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 680));
 
@@ -398,66 +376,47 @@ public class JPacientesPCP extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
-       
-  Connection con=null;
-    EnlaceBd cn = new EnlaceBd();
-    PreparedStatement ps=null;
-    ResultSet rs=null;
-    
- 
-          
-    
-    
+
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
         String Correo = TXTPcorreo.getText();
         Matcher mather = pattern.matcher(Correo);
-
-        if (TXTPapellido.getText().equals("") || TXTPnombre.getText().equals("")
-            || TXTPcedula.getText().equals("") || TXTPcorreo.getText().equals("") || TXTPtelefono.getText().equals("") || TXTPdireccion.getText().equals("")) {
-            
-            JOptionPane.showMessageDialog(null, "TODOS LOS CAMPOS SON OBLIGATORIOS", "LLENADO DE CAMPOS", JOptionPane.INFORMATION_MESSAGE);
-
-            for (int i =0; i< JTablePaciente.getRowCount();i++)
-            {
-                if(JTablePaciente.getValueAt(i,1).equals(TXTPcedula.getText())){ JOptionPane.showMessageDialog(null, "EL PACIENTE YA SE ENCUENTRA REGISTRADO", "DATO DUPLICADO", JOptionPane.ERROR_MESSAGE);;}
-            }
-
-        } else if (mather.find() == false) {
-            JOptionPane.showMessageDialog(null, "EMAIL INVALIDO, VERIFIQUE", "EMAIL INVALIDO", JOptionPane.ERROR_MESSAGE);
-            this.TXTPcorreo.requestFocus();
-        }
-
     
+  int row = JTableProveedor.getRowCount();
+    Object[] content = new Object[row];
+    for (int i = 0; i < row; i++) {
+        content[i] = JTableProveedor.getValueAt(i, 3);
+    }
+    Object value_to_find= TXTPcedula.getText();
+    boolean exist = Arrays.asList(content).contains(value_to_find);
+        
+        if (exist){
+        JOptionPane.showMessageDialog(null, "EL PROVEEDOR YA EXISTE", "PROVEEDORES", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    
+
+       else if (TXTPnombre.getText().equals("")
+            || TXTPcedula.getText().equals("")  || TXTPdireccion.getText().equals("")) {
+            
+            JOptionPane.showMessageDialog(null, "LOS CAMPOS: NOMBRE, RIF Y DIRECCIÓN SON OBLIGATORIOS", "LLENADO DE CAMPOS", JOptionPane.INFORMATION_MESSAGE);
+        }
+     
+        
         
         else {
 
-            String sql="SELECT Idpaciente, Nombre, Apellido, Cedula, Telefono, Direccion FROM table_paciente  WHERE Cedula='"+ TXTPcedula.getText() +"'";
-
-            try{
-                con = cn.getConnection();
-                ps = con.prepareStatement(sql);
-                rs = ps.executeQuery();
-    
-                
-                
-                if(rs.next()) {JOptionPane.showMessageDialog(null, "ESTA CÉDULA YA SE ENCUENTRA REGISTRADA", "CAMPO CÉDULA",JOptionPane.ERROR_MESSAGE);}
-               
-                
-                else{
+         
                     
                  AuditoriaAgregar();
                  AgregarPaciente(); 
                  conteoTablatotal();
-                }
+                
                 
 
 
-            }catch(Exception e){System.out.println(e);}
-            finally {
-     closeResources(rs, ps, con);
-    }
-            
-        }
+            }
+    
+        
     }//GEN-LAST:event_BtnAgregarActionPerformed
 
     private void BtnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLimpiarActionPerformed
@@ -473,22 +432,21 @@ conteoTablatotal();
    // ResultSet rs;
     
    
-
+   
    
    
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
         String Correo = TXTPcorreo.getText();
         Matcher mather = pattern.matcher(Correo);
 
-        if (TXTPapellido.getText().equals("") || TXTPnombre.getText().equals("") || TXTPcedula.getText().equals("") 
-            || TXTPcorreo.getText().equals("") || TXTPtelefono.getText().equals("") || TXTPdireccion.getText().equals("")) {
+        if ( TXTPnombre.getText().equals("") || TXTPcedula.getText().equals("") 
+              || TXTPdireccion.getText().equals("")) {
             
-            JOptionPane.showMessageDialog(null, "TODOS LOS CAMPOS SON OBLIGATORIOS", "LLENADO DE CAMPOS", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "LOS CAMPOS RAZÓN, RIF Y DIRECCIÓN SON OBLIGATORIOS", "LLENADO DE CAMPOS", JOptionPane.INFORMATION_MESSAGE);
         } 
         
-     
-        
-         
+   
+       /*  
         else if (mather.find() == false) {
            
             
@@ -496,12 +454,12 @@ conteoTablatotal();
             this.TXTPcorreo.requestFocus();
             
             
-        }
+        }*/
 
         
              else{    
  AuditoriaModificar();
- ActualizarPaciente(); 
+ actualizarProveedor(); 
                 }
        
                 
@@ -511,9 +469,9 @@ conteoTablatotal();
   
     
          
-            String nacimiento, sexoTable;  
-    private void JTablePacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTablePacienteMouseClicked
-     int fila = JTablePaciente.getSelectedRow();
+     String estado;
+    private void JTableProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableProveedorMouseClicked
+     int fila = JTableProveedor.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "Debe Seleccionar una Fila");
         } else {
@@ -527,25 +485,16 @@ conteoTablatotal();
           
  
     
-            idPaciente=(int) (JTablePaciente.getValueAt(fila, 0));
-            TXTPnombre.setText(JTablePaciente.getValueAt(fila, 1).toString());
-            TXTPapellido.setText(JTablePaciente.getValueAt(fila, 2).toString());
-            TXTPcedula.setText(JTablePaciente.getValueAt(fila, 3).toString());
-            TXTPtelefono.setText(JTablePaciente.getValueAt(fila, 4).toString());
-            TXTPcorreo.setText(JTablePaciente.getValueAt(fila, 5).toString());
-            TXTPdireccion.setText(JTablePaciente.getValueAt(fila, 6).toString());
-            sexoTable=(String) (JTablePaciente.getValueAt(fila, 7).toString());
-   
-                    Sexo=sexoTable;
-          String F = "Femenino";
-          String M = "Masculino";
-    
-          if(Sexo.equals(F)){ JRfemenino.setSelected(true); JRMasculino.setSelected(false);  }
-          else if(Sexo.equals(M)){ JRMasculino.setSelected(true); JRfemenino.setSelected(false);  }
-            
-            
-            
-    
+            idProveedor=(int) (JTableProveedor.getValueAt(fila, 0));
+            TXTPnombre.setText(JTableProveedor.getValueAt(fila, 1).toString());
+            jCategoria.setSelectedItem(JTableProveedor.getValueAt(fila, 2).toString());
+
+            TXTPcedula.setText(JTableProveedor.getValueAt(fila, 3).toString());
+            TXTPtelefono.setText(JTableProveedor.getValueAt(fila, 4).toString());
+            TXTPcorreo.setText(JTableProveedor.getValueAt(fila, 5).toString());
+            TXTPdireccion.setText(JTableProveedor.getValueAt(fila, 6).toString());
+            estado = (JTableProveedor.getValueAt(fila, 7).toString());
+
             
             
             
@@ -557,27 +506,11 @@ conteoTablatotal();
  
  
      
-     
-    }//GEN-LAST:event_JTablePacienteMouseClicked
+    }//GEN-LAST:event_JTableProveedorMouseClicked
     }      
     
     
     public String  Sexo="Masculino";;
-    private void JRMasculinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRMasculinoActionPerformed
-  
-        this.JRMasculino.setSelected(true);
-        JRfemenino.setSelected(false);
-        Sexo="Masculino";
-        
-        
-    }//GEN-LAST:event_JRMasculinoActionPerformed
-
-    private void JRfemeninoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRfemeninoActionPerformed
-        Sexo="Femenino";
-        this.JRMasculino.setSelected(false);
-        JRfemenino.setSelected(true);
-    }//GEN-LAST:event_JRfemeninoActionPerformed
-
     private void TXTBcedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXTBcedulaKeyReleased
 Search(); acomodarceldas();
     }//GEN-LAST:event_TXTBcedulaKeyReleased
@@ -585,10 +518,6 @@ Search(); acomodarceldas();
     private void TXTPnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXTPnombreKeyTyped
    va.longitud(TXTPnombre.getText(), 30, evt);
     }//GEN-LAST:event_TXTPnombreKeyTyped
-
-    private void TXTPapellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXTPapellidoKeyTyped
-       va.longitud(TXTPapellido.getText(), 30, evt);
-    }//GEN-LAST:event_TXTPapellidoKeyTyped
 
     private void TXTPcedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXTPcedulaKeyTyped
                char car = evt.getKeyChar();
@@ -621,38 +550,77 @@ Search(); acomodarceldas();
           va.longitud(TXTBcedula.getText(), 30, evt);
     }//GEN-LAST:event_TXTBcedulaKeyTyped
 
-    private void OrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrdenActionPerformed
+    private void ActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActivarActionPerformed
 
-         int fila = JTablePaciente.getSelectedRow();
-        try{
+ 
+                  if (JOptionPane.showConfirmDialog(rootPane, "¿Desea realmente activar este proveedor?",
+            "ACTIVAR PROVEEDOR", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)  {
 
-            if(TXTPcedula.getText().equals("")){
-                JOptionPane.showMessageDialog(null, "POR FAVOR VUELVE A SELECCIONAR UN PACIENTE", "PROCEDIMIENTOS", JOptionPane.ERROR_MESSAGE);
+        int fila = JTableProveedor.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe selecionar una Fila");
+        } else {
+
+            if (estado.equals("Activo")){ JOptionPane.showMessageDialog(null, "EL PROVEEDOR YA SE ENCUENTA: Activo", "Estado", JOptionPane.WARNING_MESSAGE);}
+            else if (setState.inactivarProveedor(100, idProveedor)) {
+
+                JOptionPane.showMessageDialog(null, "EL ESTADO DEL SERVICIO SE HA ACTUALIZADO HA : Activo", "Estado", 1);
+                limpiarTabla();
+                listarProveedores();
+                audtiActivarServ("Activo el proveedor");
+              //  audtDesactCatg();
 
             }
-
-            else if (fila == -1) {
-                JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR UNA FILA DE LA TABLA", "SELECCION", JOptionPane.ERROR_MESSAGE);
-            }
-
-            else{
-
-                agregarOrden();
-            }
+        }
 
         }
-        catch(Exception e ){
-            System.out.println("primer try catch"+e);
-            JTablePaciente.requestFocusInWindow();
-        }
-  
         
-        
-        
-    }//GEN-LAST:event_OrdenActionPerformed
+    }//GEN-LAST:event_ActivarActionPerformed
 
     
-    
+    public void eliminarServicio() {
+    Connection con = null;
+    EnlaceBd cn = new EnlaceBd();
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    try {
+      int fila = JTableProveedor.getSelectedRow();
+
+      String mensaje = "¿Está seguro de que desea eliminar " + JTableProveedor.getValueAt(fila, 1).toString() + " de la tabla de proveedores?";
+      mensaje += "\nNOTA: Si existen compras o gastos con este proveedor asignado y lo elimina, no podran visualizar los mismos";
+
+   int confirmacion = JOptionPane.showConfirmDialog(
+    rootPane,
+    mensaje,
+    "Confirmar eliminación",
+    JOptionPane.YES_NO_OPTION
+);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            String sql = "DELETE FROM `table_proveedor` WHERE id_proveedor = ?";
+
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idProveedor);
+
+            int res = ps.executeUpdate();
+
+            if (res >= 1) {
+                JOptionPane.showMessageDialog(null, "El proveedor ha sido eliminado", "Actualización de Datos", JOptionPane.INFORMATION_MESSAGE);
+                 limpiarTabla();
+                listarProveedores();
+                audtiActivarServ("Elimino el siguiente proveedor de la tabla: ");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar el proveedor", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } catch (Exception e) {
+        System.out.println(e);
+    }  finally {
+            closeResources(rs, ps, con);
+        }
+}
+
     
      public void agregarOrden() {                                             
  
@@ -697,23 +665,83 @@ Search(); acomodarceldas();
     int idorden, orden;
     String nombreCompleto, factura, cedulaOrden;
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-   int fila = JTablePaciente.getSelectedRow();
+   int fila = JTableProveedor.getSelectedRow();
         if (fila == -1) {
-        JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR UNA FILA DE LA TABLA PACIENTES", "SELECCION", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR UNA FILA DE LA TABLA PROVEEDORES", "SELECCION", JOptionPane.ERROR_MESSAGE);
         } else {
    
         
         
-        eliminarPaciente();
+       eliminarProveedor();
         }
     }//GEN-LAST:event_EliminarActionPerformed
 
-        
+    private void DesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DesactivarActionPerformed
+                if (JOptionPane.showConfirmDialog(rootPane, "¿Desea realmente inactivar este proveedor?",
+            "INACTIVAR PROVEEDOR", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)  {
 
+        int fila = JTableProveedor.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe selecionar una Fila");
+        } else {
+
+            if (estado.equals("Inactivo")){ JOptionPane.showMessageDialog(null, "EL PROVEEDOR YA SE ENCUENTA: Inactivo", "Estado", JOptionPane.WARNING_MESSAGE);}
+            else if (setState.inactivarProveedor(101, idProveedor)) {
+
+                JOptionPane.showMessageDialog(null, "EL ESTADO DEL SERVICIO SE HA ACTUALIZADO HA : Inactivo", "Estado", 1);
+                limpiarTabla();
+                listarProveedores();
+                audtiActivarServ("Inactivo el proveedor");
+              //  audtDesactCatg();
+
+            }
+        }
+
+        }
+    }//GEN-LAST:event_DesactivarActionPerformed
+  JCambiarState setState = new JCambiarState();  
+        
+ 
+      public void audtiActivarServ(String Accion){
+            
+            
+   Connection con=null;
+   EnlaceBd cn = new EnlaceBd();
+   PreparedStatement ps=null;
+   ResultSet rs=null;
+          
+
+   try {
+            
+            String Fecha = new SimpleDateFormat("yyyy-MM-dd").format(Menu.FechaAdmin.getDate());
+           
+            String sql = "INSERT INTO table_auditoria (IdUsuario, IdPersonal, Accion,FechaMov) values (?,?,?,?)";
+            String accion= Accion+" "+TXTPnombre.getText() ;
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idusuario);
+            ps.setInt(2, idusuario);
+            ps.setString(3,accion);
+            ps.setString(4,Fecha);
+   
+
+             ps.executeUpdate();
+
+            
+        } catch (Exception e) {System.out.println(e +"1"); }
+ 
+             
+       
+        finally {
+            closeResources(rs, ps, con);
+        }
+    }
+      
+      
    
    void limpiarTabla() {
        
-  DefaultTableModel Tabla = (DefaultTableModel)JTablePaciente.getModel();  
+  DefaultTableModel Tabla = (DefaultTableModel)JTableProveedor.getModel();  
   Tabla.setRowCount(0);
     }
 
@@ -722,48 +750,42 @@ Search(); acomodarceldas();
     
   public void limpiarCampos() {
       TXTPnombre.setText("");
-      TXTPapellido.setText("");
-      TXTPcedula.setText("V-");
+
+      TXTPcedula.setText("J-");
       TXTPcorreo.setText("");
       TXTPtelefono.setText("");
       TXTPdireccion.setText("");
      // TXTBnombre.setText("");
-      TXTBcedula.setText("V-");
- 
-      JRMasculino.setSelected(true);
-      JRfemenino.setSelected(false);
-      Sexo="Masculino";
+
+
       BtnAgregar.setEnabled(true);
       BtnModificar.setEnabled(false);
     }
     
-     public void listarPacientes() {
+     public void listarProveedores() {
 
-        List<JCPacientes> lista = pacientesDao.listarPacientes();
-        modelo = (DefaultTableModel) JTablePaciente.getModel();
+        List<jProveedores> lista = pacientesDao.listarProveedores();
+        modelo = (DefaultTableModel) JTableProveedor.getModel();
         Object[] ob = new Object[10];
 
         for (int i = 0; i < lista.size(); i++) {
 
-            ob[0] = lista.get(i).getIdpacientes();
-            ob[1] = lista.get(i).getNombre();
-            ob[2] = lista.get(i).getApellido();
-            ob[3] = lista.get(i).getCedula();
+            ob[0] = lista.get(i).getIdProveedor();
+            ob[1] = lista.get(i).getProveedor();
+            ob[2] = lista.get(i).getCategoria();
+            ob[3] = lista.get(i).getRif();
             ob[4] = lista.get(i).getTelefono();
             ob[5] = lista.get(i).getCorreo();
             ob[6] = lista.get(i).getDireccion();
-            ob[7] = lista.get(i).getSexo();
+            ob[7] = lista.get(i).getEstado();
             modelo.addRow(ob);
 
         }
-       JTablePaciente.setModel(modelo);
+       JTableProveedor.setModel(modelo);
         
-            
-     JTablePaciente.getColumnModel().getColumn(0).setMaxWidth(0);
-     JTablePaciente.getColumnModel().getColumn(0).setMinWidth(0);
-     JTablePaciente.getColumnModel().getColumn(0).setPreferredWidth(0);
-     JTablePaciente.setDefaultEditor(Object.class, null);
-     DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) JTablePaciente.getTableHeader().getDefaultRenderer();
+     acomodarceldas();
+     JTableProveedor.setDefaultEditor(Object.class, null);
+     DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) JTableProveedor.getTableHeader().getDefaultRenderer();
      headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
     }
     
@@ -773,7 +795,7 @@ Search(); acomodarceldas();
     
       public void AgregarPaciente(){                                             
     
-  Connection con=null;
+    Connection con=null;
     EnlaceBd cn = new EnlaceBd();
     PreparedStatement ps=null;
     ResultSet rs=null;
@@ -781,35 +803,41 @@ Search(); acomodarceldas();
 
           try {
 
-              
-                    
+        
+        java.sql.Date fechaU;
+        Date dateU = Menu.FechaAdmin.getDate();
+        long dU = dateU.getTime();
+        fechaU = new java.sql.Date(dU);
 
         
-  
+        
         
         
               
-              
-            String sql = "INSERT INTO table_paciente (Nombre, Apellido, Cedula,Telefono,Correo,Direccion, Sexo) VALUES (?,?,?,?,?,?,?)";
+        
+            String sql = "INSERT INTO table_proveedor (proveedor,id_categoria, rif, telefono, correo, direccion) " +
+             "VALUES (?, (SELECT id_catprov FROM categorias_proveedores WHERE categoria = ?), ?, ?, ?, ?)";
+
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-      
+     
             ps.setString(1, TXTPnombre.getText());
-            ps.setString(2, TXTPapellido.getText());
+            ps.setString(2, jCategoria.getSelectedItem().toString());
             ps.setString(3, TXTPcedula.getText());
             ps.setString(4, TXTPtelefono.getText());
             ps.setString(5, TXTPcorreo.getText());
             ps.setString(6, TXTPdireccion.getText());
-            ps.setString(7, Sexo);
+
+
             ps.execute();
   
             
-            limpiarTabla(); listarPacientes(); limpiarCampos();
-  JOptionPane.showMessageDialog(null, "CLIENTE REGISTRADO","REGISTRO DE CLIENTE", 1);
+            limpiarTabla();      listarProveedores(); limpiarCampos();
+  JOptionPane.showMessageDialog(null, "EL PROVEEDOR HA SIDO REGISTRADO","REGISTRO DE PACIENTES", 1);
         } catch (Exception e) {
       
             JOptionPane.showMessageDialog(null, e);
-        }  finally {
+        } finally {
      closeResources(rs, ps, con);
     }
           
@@ -822,7 +850,7 @@ Search(); acomodarceldas();
       
       
      
-   public void ActualizarPaciente() {
+   public void actualizarProveedor() {
    
     Connection con=null;
     EnlaceBd cn = new EnlaceBd();
@@ -837,34 +865,46 @@ Search(); acomodarceldas();
             
             
             
+        java.sql.Date fechaU;
+        Date dateU = Menu.FechaAdmin.getDate();
+        long dU = dateU.getTime();
+        fechaU = new java.sql.Date(dU);
 
+         
         
-            String sql = "update table_paciente set Nombre=?,	Apellido=?,	Cedula=?,	Telefono=?,	Correo=?,  Direccion=?,  Sexo=? where Idpaciente=?";
-
+            String sql = "UPDATE table_proveedor SET " +
+                     "proveedor = ?, " +
+                     "id_categoria = (SELECT id_catprov FROM categorias_proveedores WHERE categoria = ?), " +
+                     "rif = ?, " +
+                     "telefono = ?, " +
+                     "correo = ?, " +
+                     "direccion = ? " +
+                     "WHERE id_proveedor = ?";
+            
+            
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, TXTPnombre.getText());
-            ps.setString(2, TXTPapellido.getText());
+            ps.setString(2, jCategoria.getSelectedItem().toString());
             ps.setString(3, TXTPcedula.getText());
             ps.setString(4, TXTPtelefono.getText());
             ps.setString(5, TXTPcorreo.getText());
             ps.setString(6, TXTPdireccion.getText());
-            ps.setString(7, Sexo);
-            ps.setInt(8, idPaciente);
+            ps.setInt(7, idProveedor);
             int res = ps.executeUpdate();
 
             if (res >= 1) {
-                JOptionPane.showMessageDialog(null, "PACIENTE ACTUALIZADO", "ACTUALIZACIÓN DE DATOS", 1);
+                JOptionPane.showMessageDialog(null, "PROVEEDOR ACTUALIZADO", "ACTUALIZACIÓN DE DATOS", 1);
                 limpiarTabla();
-                listarPacientes();
+                   listarProveedores();
                 
             } else {
-                JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR PACIENTE", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL PROVEEDOR", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
             System.out.println(e);
             JOptionPane.showMessageDialog(null, "NO PUEDE INGRESAR UNA CÉDULA DUPLICADA", "DATOS DUPLICADOS", JOptionPane.ERROR_MESSAGE);
-           } finally {
+           }finally {
      closeResources(rs, ps, con);
     }
                  
@@ -883,13 +923,20 @@ Search(); acomodarceldas();
     
     String busqueda = this.TXTBcedula.getText().trim(); // Obtener texto de búsqueda
     
+    
+    
+ 
+    
     // Consulta SQL para buscar por cédula, nombre o apellido
-    String sql = "SELECT Idpaciente, Nombre, Apellido, Cedula, Telefono, Correo, Direccion, Sexo " +
-                 "FROM table_paciente " +
-                 "WHERE Cedula LIKE ? OR CONCAT(Nombre, ' ', Apellido) LIKE ?";
+String sql = "SELECT id_proveedor, proveedor, p.categoria, rif, telefono, correo, direccion, e.Estado " +
+             "FROM table_proveedor u " +
+             "INNER JOIN categorias_proveedores p ON u.id_categoria = p.id_catprov " +
+             "INNER JOIN table_estado e ON u.estado = e.IdEstado " +
+             "WHERE u.rif LIKE ? OR u.proveedor LIKE ?";
+
     
     // Declaración del modelo de la tabla
-    DefaultTableModel tabla = (DefaultTableModel) JTablePaciente.getModel();
+    DefaultTableModel tabla = (DefaultTableModel) JTableProveedor.getModel();
     tabla.setRowCount(0); // Limpiar la tabla antes de agregar datos
     
     try {
@@ -914,8 +961,8 @@ Search(); acomodarceldas();
             String col5 = rs.getString(5);  // Telefono
             String col6 = rs.getString(6);  // Correo
             String col7 = rs.getString(7);  // Direccion
-            String col8 = rs.getString(8);  // Sexo
-     
+            String col8 = rs.getString(8);  // Nombre
+
             
             // Agregar datos a la tabla
             Vector<Object> vRow = new Vector<>();
@@ -927,13 +974,13 @@ Search(); acomodarceldas();
             vRow.add(col6);
             vRow.add(col7);
             vRow.add(col8);
-          
+  
             
             tabla.addRow(vRow);
         }
         
         // Otras configuraciones de la tabla
-        JTablePaciente.getTableHeader().setReorderingAllowed(false);
+        JTableProveedor.getTableHeader().setReorderingAllowed(false);
         acomodarceldas(); // Ajustar celdas si es necesario
         
     } catch (SQLException e) {
@@ -1013,7 +1060,7 @@ Search(); acomodarceldas();
               String Fecha = new SimpleDateFormat("yyyy-MM-dd").format(Menu.FechaAdmin.getDate());
            
             String sql = "INSERT INTO table_auditoria (IdUsuario, IdPersonal, Accion,FechaMov) values (?,?,?,?)";
-            String accion= "HORA: "+Menu.Time.getText()+" Agrego al paciente: "+ TXTPnombre.getText()+" "+TXTPapellido.getText() +" " ;
+            String accion= "HORA: "+Menu.Time.getText()+" Agrego al proveedor: "+ TXTPnombre.getText() ;
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.setInt(1, idusuario);
@@ -1084,7 +1131,7 @@ Search(); acomodarceldas();
    try {
             
             String Fecha = new SimpleDateFormat("yyyy-MM-dd").format(Menu.FechaAdmin.getDate());
-            String nombreCompleto = TXTPnombre.getText() + " " + TXTPapellido.getText();
+            String nombreCompleto = TXTPnombre.getText() ;
             String sql = "INSERT INTO table_auditoria (IdUsuario, IdPersonal, Accion,FechaMov) values (?,?,?,?)";
            
             String accion= "Elimino al paciente de la bd: "+ nombreCompleto +" " ;
@@ -1204,7 +1251,7 @@ Search(); acomodarceldas();
             String Fecha = new SimpleDateFormat("yyyy-MM-dd").format(Menu.FechaAdmin.getDate());
            
             String sql = "INSERT INTO table_auditoria (IdUsuario, IdPersonal, Accion,FechaMov) values (?,?,?,?)";
-            String accion= "HORA: "+Menu.Time.getText()+" Modifico al paciente: "+ TXTPnombre.getText()+" "+TXTPapellido.getText() +" " ;
+            String accion= "HORA: "+Menu.Time.getText()+" Modifico al paciente: "+ TXTPnombre.getText();
             
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -1232,57 +1279,54 @@ Search(); acomodarceldas();
       
       
       
-      
-      
-       public void acomodarceldas()
-    {
-     
-        DefaultTableModel Tabla = (DefaultTableModel)JTablePaciente.getModel();
-        DefaultTableCellRenderer Alinear = new DefaultTableCellRenderer();
-        Alinear.setHorizontalAlignment(SwingConstants.CENTER);
-        JTablePaciente.setRowHeight(20);
-        
-       JTablePaciente.getColumnModel().getColumn(0).setMaxWidth(0);
-       JTablePaciente.getColumnModel().getColumn(0).setMinWidth(0);
-       JTablePaciente.getColumnModel().getColumn(0).setPreferredWidth(0);
-        
-       
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("NOMBRE")).setPreferredWidth(60);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("APELLIDO")).setPreferredWidth(60);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("CEDULA")).setPreferredWidth(60);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("TELEFONO")).setPreferredWidth(70);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("CORREO")).setPreferredWidth(70);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("DIRECCIÓN")).setPreferredWidth(70);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("SEXO")).setPreferredWidth(60);
+   public void acomodarceldas() {
+    DefaultTableModel tabla = (DefaultTableModel) JTableProveedor.getModel();
+    DefaultTableCellRenderer alinear = new DefaultTableCellRenderer();
+    alinear.setHorizontalAlignment(SwingConstants.CENTER);
 
-         
-        
-      
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("NOMBRE")).setCellRenderer(Alinear);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("APELLIDO")).setCellRenderer(Alinear);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("CEDULA")).setCellRenderer(Alinear);;
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("TELEFONO")).setCellRenderer(Alinear);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("CORREO")).setCellRenderer(Alinear);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("DIRECCIÓN")).setCellRenderer(Alinear);
-        JTablePaciente.getColumnModel().getColumn(Tabla.findColumn("SEXO")).setCellRenderer(Alinear);
-
+    // Nombres de las columnas y sus anchos respectivos
+    String[] columnas = {
+        "ID", "RAZÓN", "CATEGORIA", "RIF | CI",
+        "TELEFONO", "CORREO", "DIRECCIÓN",
+        "ESTADO"
+    };
     
+    int[] anchos = {10, 180, 80, 40, 40, 40, 80, 20};
+
+    for (int i = 0; i < columnas.length; i++) {
+        int col = tabla.findColumn(columnas[i]);
+  
+        /*if ("ID".equals(columnas[i])) {
+    TableColumn colId = jTable1.getColumnModel().getColumn(col);
+    colId.setMinWidth(0);
+    colId.setMaxWidth(0);
+    colId.setPreferredWidth(0);
+    continue;
+}*/
+        
+        if (col != -1) {
+            JTableProveedor.getColumnModel().getColumn(col).setPreferredWidth(anchos[i]);
+            JTableProveedor.getColumnModel().getColumn(col).setCellRenderer(alinear);
+        } else {
+            System.err.println("⚠️  Columna no encontrada: " + columnas[i]);
+        }
     }
-            
+}
+    
        
      
        
        
-    public void eliminarPaciente() {
+    public void eliminarProveedor() {
     Connection con = null;
     EnlaceBd cn = new EnlaceBd();
     PreparedStatement ps = null;
     ResultSet rs=null;
     try {
-        String nombreCompleto = TXTPnombre.getText() + " " + TXTPapellido.getText();
+        String nombreCompleto = TXTPnombre.getText() ;
 
-      String mensaje = "¿Está seguro de que desea eliminar a " + nombreCompleto + " de la tabla de pacientes?";
-      mensaje += "\nNOTA: Si el paciente cuenta con estudios ya generados, no se podrán visualizar en la tabla de consultas.";
+      String mensaje = "¿Está seguro de que desea eliminar a " + nombreCompleto + " de la tabla de proveedores?";
+      mensaje += "\nNOTA: Si el proveedor cuenta con reportes ya generados, no se podrán visualizar en la tabla de consultas.";
 
    int confirmacion = JOptionPane.showConfirmDialog(
     rootPane,
@@ -1292,22 +1336,22 @@ Search(); acomodarceldas();
 );
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            String sql = "DELETE FROM `table_paciente` WHERE Idpaciente = ?";
+            String sql = "DELETE FROM `table_proveedor` WHERE id_proveedor = ?";
 
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setInt(1, idPaciente);
+            ps.setInt(1, idProveedor);
 
             int res = ps.executeUpdate();
 
             if (res >= 1) {
-                JOptionPane.showMessageDialog(null, "El paciente ha sido eliminado", "Actualización de Datos", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El Proveedor ha sido eliminado", "Actualización de Datos", JOptionPane.INFORMATION_MESSAGE);
                 limpiarTabla();
-                listarPacientes();
+                    listarProveedores();
                 conteoTablatotal();
                 auditoriaEliminarPaciente();
             } else {
-                JOptionPane.showMessageDialog(null, "Error al eliminar al paciente", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Error al eliminar al proveedor", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     } catch (Exception e) {
@@ -1317,340 +1361,7 @@ Search(); acomodarceldas();
     }
 }
          
-         
-    public void asignarHematologia() {
-    Connection con = null;
-    EnlaceBd cn = new EnlaceBd();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
 
-    try {
-        // Crear campos de texto
-        JCheckBox gbCheckBox = createStyledCheckBox("GB");
-        JCheckBox linfCheckBox = createStyledCheckBox("LINF");
-        JCheckBox segCheckBox = createStyledCheckBox("SEG");
-        JCheckBox hbCheckBox = createStyledCheckBox("HB");
-        JCheckBox htoCheckBox = createStyledCheckBox("HTO");
-        JCheckBox vcmCheckBox = createStyledCheckBox("VCM");
-        JCheckBox chcmCheckBox = createStyledCheckBox("CHCM");
-        JCheckBox plaqCheckBox = createStyledCheckBox("PLAQ");
-        JCheckBox todos = createStyledCheckBox("Todos");
-
-        // Crear etiquetas para los campos de texto
-
-        // Crear el panel y establecer el diseño
-        JPanel panel = new JPanel(new GridLayout(4, 2));
-
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setPreferredSize(new Dimension(400, 200));
-        // Agregar etiquetas y campos de texto al panel
-
-        panel.add(gbCheckBox);
-        panel.add(linfCheckBox);
-        panel.add(segCheckBox);
-        panel.add(hbCheckBox);
-        panel.add(htoCheckBox);
-        panel.add(vcmCheckBox);
-        panel.add(chcmCheckBox);
-        panel.add(plaqCheckBox);
-        panel.add(todos);
-
-        // Agregar un ActionListener para el JCheckBox "Todos"
-        todos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean seleccionado = todos.isSelected();
-
-                // Iterar sobre los JCheckBox y establecer su estado
-                gbCheckBox.setSelected(seleccionado);
-                linfCheckBox.setSelected(seleccionado);
-                segCheckBox.setSelected(seleccionado);
-                hbCheckBox.setSelected(seleccionado);
-                htoCheckBox.setSelected(seleccionado);
-                vcmCheckBox.setSelected(seleccionado);
-                chcmCheckBox.setSelected(seleccionado);
-                plaqCheckBox.setSelected(seleccionado);
-            }
-        });
-
-        // Mostrar el panel de entrada de datos
-        int result = JOptionPane.showConfirmDialog(null, panel, "HEMATOLOGIA PACIENTE: " + nombreCompleto, JOptionPane.OK_CANCEL_OPTION);
-
-        if (result == JOptionPane.OK_OPTION) {
-            Map<String, Boolean> data = new HashMap<>();
-            data.put("GB", gbCheckBox.isSelected() ? true : false);
-            data.put("LINF", linfCheckBox.isSelected() ? true : false);
-            data.put("SEG", segCheckBox.isSelected() ? true : false);
-            data.put("HB", hbCheckBox.isSelected() ? true : false);
-            data.put("HTO", htoCheckBox.isSelected() ? true : false);
-            data.put("VCM", vcmCheckBox.isSelected() ? true : false);
-            data.put("CHCM", chcmCheckBox.isSelected() ? true : false);
-            data.put("PLAQ", plaqCheckBox.isSelected() ? true : false);
-
-            try {
-                String Fecha = new SimpleDateFormat("yyyy-MM-dd").format(Menu.FechaAdmin.getDate());
-
-                String sql = "INSERT INTO `asig_hematologia`( `Id_ordenes`, `Leucocitos`, `Linfocitos`, `Neutrofilos`, `Hemoglobina`, `Hematocrito`, `VCM`, `CHCM`, `Plaquetas`) VALUES (?,?,?,?,?,?,?,?,?)";
-
-                con = cn.getConnection();
-                ps = con.prepareStatement(sql);
-                ps.setInt(1, orden);
-                ps.setBoolean(2, data.get("GB"));
-                ps.setBoolean(3, data.get("LINF"));
-                ps.setBoolean(4, data.get("SEG"));
-                ps.setBoolean(5, data.get("HB"));
-                ps.setBoolean(6, data.get("HTO"));
-                ps.setBoolean(7, data.get("VCM"));
-                ps.setBoolean(8, data.get("CHCM"));
-                ps.setBoolean(9, data.get("PLAQ"));
-      
-               ps.executeUpdate();
-               JOptionPane.showMessageDialog(null, "Datos insertados correctamente", "Estudios", 1);
-                
-                
-               
-            } catch (Exception e) {
-                System.out.println(e + "1");
-            }
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "SOLO PUEDE INGRESAR NÚMEROS ERROR: " + e);
-        System.out.println(e);
-    } finally {
-       closeResources(rs, ps, con);
-    }
-}
-
- 
-    
-
-    
-    
-    
-public void asignarQuimica() {
-    Connection con = null;
-    EnlaceBd cn = new EnlaceBd();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try {
-        // Crear campos de texto
-        JCheckBox GLICEMIACheckBox = createStyledCheckBox("GLI");
-        JCheckBox UREACheckBox = createStyledCheckBox("UREA");
-        JCheckBox CREACheckBox = createStyledCheckBox("CREA");
-        JCheckBox AUCheckBox = createStyledCheckBox("A.U");
-        JCheckBox COLTCheckBox = createStyledCheckBox("COLEST");
-        JCheckBox TRIGCheckBox = createStyledCheckBox("TRIG");
-        JCheckBox HDLCCheckBox = createStyledCheckBox("HDL");
-        JCheckBox LDLCCheckBox = createStyledCheckBox("LDL");
-        JCheckBox VLDLCCheckBox = createStyledCheckBox("VLDL");
-        
-        JCheckBox BTCheckBox = createStyledCheckBox("BT");
-        JCheckBox BDCheckBox = createStyledCheckBox("BD");
-        JCheckBox BICheckBox = createStyledCheckBox("BI");
-        JCheckBox PROTCheckBox = createStyledCheckBox("PT");
-        JCheckBox ALBCheckBox = createStyledCheckBox("ALB");
-        
-        JCheckBox GLOBCheckBox = createStyledCheckBox("GLOB");
-        JCheckBox RAGCheckBox = createStyledCheckBox("RA/G");
-        JCheckBox TGOCheckBox = createStyledCheckBox("TGO");
-        JCheckBox TGPCheckBox = createStyledCheckBox("TGP");
-        JCheckBox CALCheckBox = createStyledCheckBox("CAL");
-        
-        JCheckBox FOSFCheckBox = createStyledCheckBox("FOSF");
-        JCheckBox MAGCheckBox = createStyledCheckBox("MAG");
-        JCheckBox GGTCheckBox = createStyledCheckBox("GGT");
-        JCheckBox ALPCheckBox = createStyledCheckBox("ALP");
-        JCheckBox LDHCheckBox = createStyledCheckBox("LDH");
-        
-        JCheckBox AMICheckBox = createStyledCheckBox("AMI");
-        JCheckBox LIPCheckBox = createStyledCheckBox("LIP");
-        JCheckBox PCRCheckBox = createStyledCheckBox("PCR");
-
-        
-        JCheckBox todos = createStyledCheckBox("Todos");
-
-        // Crear etiquetas para los campos de texto
-
-        // Crear el panel y establecer el diseño
-        JPanel panel = new JPanel(new GridLayout(4, 2));
-
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setPreferredSize(new Dimension(550, 200));
-        // Agregar etiquetas y campos de texto al panel
-
-        panel.add(GLICEMIACheckBox);
-        panel.add(UREACheckBox);
-        panel.add(CREACheckBox);
-        panel.add(AUCheckBox);
-        panel.add(COLTCheckBox);
-        panel.add(TRIGCheckBox);
-        panel.add(HDLCCheckBox);
-        panel.add(LDLCCheckBox);
-        panel.add(VLDLCCheckBox);
-        panel.add(BTCheckBox);
-        panel.add(BDCheckBox);
-        panel.add(BICheckBox);
-        panel.add(PROTCheckBox);
-        panel.add(ALBCheckBox);
-        panel.add(GLOBCheckBox);
-        panel.add(RAGCheckBox);
-        panel.add(TGOCheckBox);
-        panel.add(TGPCheckBox);
-        panel.add(CALCheckBox);
-        panel.add(FOSFCheckBox);
-        panel.add(MAGCheckBox);
-        panel.add(GGTCheckBox);
-        panel.add(ALPCheckBox);
-        panel.add(LDHCheckBox);        
-        panel.add(AMICheckBox);
-        panel.add(LIPCheckBox);
-        panel.add(PCRCheckBox);
-  
-        
-        
-        
-        panel.add(todos);
-
-        // Agregar un ActionListener para el JCheckBox "Todos"
-        todos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean seleccionado = todos.isSelected();
-
-                // Iterar sobre los JCheckBox y establecer su estado
-                GLICEMIACheckBox.setSelected(seleccionado);
-                UREACheckBox.setSelected(seleccionado);
-                CREACheckBox.setSelected(seleccionado);
-                AUCheckBox.setSelected(seleccionado);
-                COLTCheckBox.setSelected(seleccionado);
-                TRIGCheckBox.setSelected(seleccionado);
-                HDLCCheckBox.setSelected(seleccionado);
-                LDLCCheckBox.setSelected(seleccionado);
-                
-                VLDLCCheckBox.setSelected(seleccionado);
-                BTCheckBox.setSelected(seleccionado);
-                BDCheckBox.setSelected(seleccionado);
-                BICheckBox.setSelected(seleccionado);
-                PROTCheckBox.setSelected(seleccionado);
-                ALBCheckBox.setSelected(seleccionado);
-                GLOBCheckBox.setSelected(seleccionado);
-                RAGCheckBox.setSelected(seleccionado);
-                
-                TGOCheckBox.setSelected(seleccionado);
-                TGPCheckBox.setSelected(seleccionado);
-                CALCheckBox.setSelected(seleccionado);
-                FOSFCheckBox.setSelected(seleccionado);
-                MAGCheckBox.setSelected(seleccionado);
-                GGTCheckBox.setSelected(seleccionado);
-                ALPCheckBox.setSelected(seleccionado);
-                LDHCheckBox.setSelected(seleccionado);
-                
-                AMICheckBox.setSelected(seleccionado);
-                LIPCheckBox.setSelected(seleccionado);
-                PCRCheckBox.setSelected(seleccionado);
-
-                
-            }
-        });
-
-        // Mostrar el panel de entrada de datos
-        int result = JOptionPane.showConfirmDialog(null, panel, "QUIMICA PACIENTE: " + nombreCompleto, JOptionPane.OK_CANCEL_OPTION);
-
-        if (result == JOptionPane.OK_OPTION) {
-            Map<String, Boolean> data = new HashMap<>();
-            data.put("GLI", GLICEMIACheckBox.isSelected() ? true : false);
-            data.put("UREA", UREACheckBox.isSelected() ? true : false);
-            data.put("CREA", CREACheckBox.isSelected() ? true : false);
-            data.put("AU", AUCheckBox.isSelected() ? true : false);
-            data.put("COLEST", COLTCheckBox.isSelected() ? true : false);
-            data.put("TRIG", TRIGCheckBox.isSelected() ? true : false);
-            data.put("HDL", HDLCCheckBox.isSelected() ? true : false);
-            data.put("LDL", LDLCCheckBox.isSelected() ? true : false);
-            data.put("VLDL", VLDLCCheckBox.isSelected() ? true : false);
-            data.put("BT", BTCheckBox.isSelected() ? true : false);
-            data.put("BD", BDCheckBox.isSelected() ? true : false);
-            data.put("BI", BICheckBox.isSelected() ? true : false);
-            data.put("PT", PROTCheckBox.isSelected() ? true : false);
-            data.put("ALB", ALBCheckBox.isSelected() ? true : false);
-            data.put("GLOB", GLOBCheckBox.isSelected() ? true : false);
-            
-            data.put("RAG", RAGCheckBox.isSelected() ? true : false);
-            data.put("TGO", TGOCheckBox.isSelected() ? true : false);
-            data.put("TGP", TGPCheckBox.isSelected() ? true : false);
-            data.put("CAL", CALCheckBox.isSelected() ? true : false);
-            
-            data.put("FOSF", FOSFCheckBox.isSelected() ? true : false);
-            data.put("MAG",  MAGCheckBox.isSelected() ? true : false);
-            data.put("GGT", GGTCheckBox.isSelected() ? true : false);
-            data.put("ALP", ALPCheckBox.isSelected() ? true : false);
-            data.put("LDH", LDHCheckBox.isSelected() ? true : false);
-            data.put("AMI", AMICheckBox.isSelected() ? true : false);
-            data.put("LIP", LIPCheckBox.isSelected() ? true : false);
-            data.put("PCR", PCRCheckBox.isSelected() ? true : false);
-            
-
-            try {
-                String Fecha = new SimpleDateFormat("yyyy-MM-dd").format(Menu.FechaAdmin.getDate());
-
-String sql = "INSERT INTO `asig_quimica`(`id_ordenQU`, `GLICEMIA`, `UREA`, `CREATININA`, `ACIDO_URICO`, `COLESTEROL`, `TRIGLICERIDOS`, `HDL`, `LDL`, `VLDL`, `BILITOTAL`, `BILIDIRECTA`, `BILIINDIRECTA`, `PROTEINAS_TOTALES`, `ALBUMINA`, `GLOBULINAS`, `RELACION`, `TGO`, `TGP`, `GGT`, `FOSFATASA`, `LDH`, `AMILASA`, `LIPASA`, `CALCIO`, `FOSFORO`, `MAGNESIO`, `CK`) \n" +
-"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-
-                con = cn.getConnection();
-                ps = con.prepareStatement(sql);
-                ps.setInt(1, orden);
-               
-                ps.setBoolean(2, data.get("GLI"));
-                ps.setBoolean(3, data.get("UREA"));
-                ps.setBoolean(4, data.get("CREA"));
-                ps.setBoolean(5, data.get("AU"));
-                ps.setBoolean(6, data.get("COLEST"));
-                ps.setBoolean(7, data.get("TRIG"));
-                ps.setBoolean(8, data.get("HDL"));
-                ps.setBoolean(9, data.get("LDL"));
-                ps.setBoolean(10, data.get("VLDL"));
-                
-                ps.setBoolean(11, data.get("BT"));
-                ps.setBoolean(12, data.get("BD"));
-                ps.setBoolean(13, data.get("BI"));
-                ps.setBoolean(14, data.get("PT"));
-                ps.setBoolean(15, data.get("ALB"));
-                ps.setBoolean(16, data.get("GLOB"));
-                ps.setBoolean(17, data.get("RAG"));
-                ps.setBoolean(18, data.get("TGO"));
-                ps.setBoolean(19, data.get("TGP"));
-                
-                ps.setBoolean(20, data.get("GGT"));
-                ps.setBoolean(21, data.get("ALP"));
-                ps.setBoolean(22, data.get("LDH"));
-                ps.setBoolean(23, data.get("AMI"));
-                ps.setBoolean(24, data.get("LIP"));
-                ps.setBoolean(25, data.get("CAL"));
-                ps.setBoolean(26, data.get("FOSF"));
-                ps.setBoolean(27, data.get("MAG"));
-                ps.setBoolean(28, data.get("PCR"));
-                
-                            
-               ps.executeUpdate();
-               JOptionPane.showMessageDialog(null, "Datos insertados correctamente", "Estudios", 1);
-                
-                
-               
-            } catch (Exception e) {
-                System.out.println(e + "1");
-            }
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "SOLO PUEDE INGRESAR NÚMEROS ERROR: " + e);
-        System.out.println(e);
-    } finally {
-      closeResources(rs, ps, con);
-    }
-}
-   
-    
-    
     
     
     
@@ -1686,7 +1397,7 @@ private JLabel createStyledLabel(String labelText) {
        
     public void conteoTablatotal(){
        
-       for(int x =0; x<=JTablePaciente.getRowCount(); x++ ){
+       for(int x =0; x<=JTableProveedor.getRowCount(); x++ ){
        jLabel2.setText(""+x);
        
        }
@@ -1708,29 +1419,27 @@ private JLabel createStyledLabel(String labelText) {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Activar;
     private javax.swing.JPopupMenu AsignarOrden;
     private javax.swing.JButton BtnAgregar;
     private javax.swing.JButton BtnLimpiar;
     private javax.swing.JButton BtnModificar;
+    private javax.swing.JMenuItem Desactivar;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JLabel FechaAc2;
-    private javax.swing.JRadioButton JRMasculino;
-    private javax.swing.JRadioButton JRfemenino;
-    private javax.swing.JTable JTablePaciente;
-    private javax.swing.JMenuItem Orden;
+    private javax.swing.JTable JTableProveedor;
     private javax.swing.JTextField TXTBcedula;
-    private javax.swing.JTextField TXTPapellido;
     private javax.swing.JTextField TXTPcedula;
     private javax.swing.JTextField TXTPcorreo;
     private javax.swing.JTextArea TXTPdireccion;
     private javax.swing.JTextField TXTPnombre;
     private javax.swing.JFormattedTextField TXTPtelefono;
+    private javax.swing.JComboBox<String> jCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

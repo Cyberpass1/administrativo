@@ -940,7 +940,6 @@ public ArrayList<PdfVO> listarFacturas(String fecha1, String fecha2) {
 "    c.Cedula, \n" +
 "    c.Correo, \n" +
 "    u.fecha_fact, \n" +
-"    u.arch_fact, \n" +
 "    l.Estado,\n" +
 "    p.moneda\n" +
 
@@ -982,7 +981,6 @@ public ArrayList<PdfVO> listarFacturas(String fecha1, String fecha2) {
                 vo.setFac_nombre(rs.getString("Nombre") + " " + rs.getString("Apellido"));  
                 vo.setFac_ced(rs.getString("Cedula"));
                 vo.setFac_correo(rs.getString("Correo"));
-                vo.setFac_reporte(rs.getBytes("arch_fact"));
                 vo.setFac_fecha(rs.getString("fecha_fact"));  
                 vo.setFac_estado(rs.getString("Estado"));
                 vo.setMoneda(rs.getString("moneda"));

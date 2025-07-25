@@ -15,7 +15,6 @@ import Clases.JPacientesDao;
 import Clases.Temporal;
 import Clases.Validar;
 import Menu.Mprincipal;
-import Procesos.JLabexamenes.JPerfilrutina;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;

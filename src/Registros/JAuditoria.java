@@ -546,7 +546,36 @@ limpiarTablaEstudios();
    
    
    
+    String  empresa, rif, ubicacion, telefonos, piepagina;
+   public void informacionpdf() {
+
+   Connection con=null;
+   EnlaceBd cn = new EnlaceBd();
+   PreparedStatement ps=null;
+   ResultSet rs=null;
    
+        try {
+
+            String sql = "select * from tableinfopdfs";
+
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                empresa = rs.getString("nombrempresa");
+                rif = rs.getString("rif");
+                ubicacion = rs.getString("ubicacion");
+                telefonos = rs.getString("telefonos");
+                piepagina = rs.getString("infopiepagina");
+               
+            }
+
+        } catch (Exception e) {System.out.println(e);
+        }   finally {
+            closeResources(rs, ps, con);
+        } 
+    }
+    
    
    
    
@@ -604,8 +633,8 @@ limpiarTablaEstudios();
             PdfWriter writer=  PdfWriter.getInstance(doc, archivo);
             doc.open();
             
-            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("C:\\Fundaginebra\\src\\imagenes\\Fundacionlogo1.png");
-            header.setAlignment(Chunk.ALIGN_CENTER);
+           
+       
 
             Paragraph fecha = new Paragraph();
             Font negrita = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
@@ -616,21 +645,30 @@ limpiarTablaEstudios();
             //fecha.add( "  Fecha: " + Fecha + "\n" +"  Hora: "+ Hora ) ;
 
             
-            
-            PdfPTable Encabezado = new PdfPTable(1);
-            Encabezado.setWidthPercentage(25);
-            Encabezado.getDefaultCell().setBorder(0);
-            float[] ColumnaEncabezado = new float[]{50f};
-            Encabezado.setWidths(ColumnaEncabezado);
-            Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
-           // String razon =  "Fundación Convenio de Ginbra I";
-           // String riff =   "J-8188418-8";
-           // String tlf =    "0000-000000";
-           // String dir =    "Centro";
-            Encabezado.addCell(header);
-           
+   
           
             
+            
+          
+       
+                        // Cargar la imagen
+com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("C:\\Cyberia\\src\\imagenes\\Logo_System.png");
+
+// Escalar a un tamaño adecuado sin deformar
+header.scaleToFit(120, 80); // Puedes ajustar según el diseño
+
+// Obtener el alto del documento
+float pageHeight = doc.getPageSize().getHeight();
+
+// Posicionar en la esquina superior izquierda con margen
+float marginLeft = 30f; // distancia desde el borde izquierdo
+float marginTop = 30f;  // distancia desde el borde superior
+
+// Posicionar imagen desde la esquina izquierda, bajándola un poco para no pegarla al borde superior
+header.setAbsolutePosition(marginLeft, pageHeight - header.getScaledHeight() - marginTop);
+
+// Agregar la imagen
+doc.add(header);
             
             
             
@@ -639,16 +677,12 @@ limpiarTablaEstudios();
             BaseFont BF2 = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
   
             CB.beginText();
-        
-
             CB.setFontAndSize(BF2, 12);
             CB.setTextMatrix(200, 800);
-            CB.showText("FUNDACIÓN CONVENIO DE GINEBRA I");
+            CB.showText(empresa);
             CB.setFontAndSize(BF, 10);
             CB.setTextMatrix(260, 790);
-            CB.showText("  RIF J-31258512-9  ");
-            
-            
+            CB.showText(rif);
             CB.setFontAndSize(BF2, 10);
             CB.setTextMatrix(460, 780);
             CB.showText("FECHA: "+ Fecha);
@@ -658,16 +692,17 @@ limpiarTablaEstudios();
             CB.showText("HORA: "+ Hora);
             
             CB.setFontAndSize(BF2, 8);
-            CB.setTextMatrix(250, 740);
-            CB.showText("N° 9, Calle Mariño Sur, Maracay 2103, Aragua");
+            CB.setTextMatrix(235, 740);
+            CB.showText(ubicacion);
           
             CB.setFontAndSize(BF2, 8);
-            CB.setTextMatrix(180, 730);
-            CB.showText("Teléfonos: 0426-2407263 | 0243-2468726 | Correo: info@fundaginebra.com "); 
+            CB.setTextMatrix(210, 730);
+            CB.showText(telefonos); 
             CB.setTextMatrix(168, 725);
             CB.showText("__________________________________________________________________");
+          
             CB.endText();
-        
+
        //BODY 
        
        
@@ -746,8 +781,7 @@ limpiarTablaEstudios();
     
        
             }
-            doc.add(Encabezado);
-            doc.add(saltolinea);
+
             doc.add(saltolinea);
             doc.add(tablapro);
          

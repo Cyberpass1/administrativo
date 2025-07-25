@@ -12,8 +12,6 @@ import Clases.JCEspecialidades;
 import Clases.JCFactura;
 import Clases.JCFacturaDao;
 import Clases.JCPacientes;
-import Clases.JCProcedimientos;
-import Clases.JCProcedimientosDao;
 import Clases.JCambiarState;
 import Clases.Temporal;
 import Clases.Validar;

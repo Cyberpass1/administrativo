@@ -369,7 +369,33 @@ public static ArrayList<String> llenarResultado() {
 }      
           
           
-          
+            
+       public static ArrayList<String> llenarProveedores() {
+        ArrayList<String> lista = new ArrayList<>();
+        String sql = "SELECT  `proveedor`, estado FROM `table_proveedor` ORDER BY proveedor ASC";
+        
+        // Obtén la conexión a la base de datos
+        try (Connection con = cn.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            // Procesa los resultados
+            while (rs.next()) {
+                int estado = rs.getInt("estado");
+                if (estado == 100) {
+                    lista.add(rs.getString("proveedor"));
+                }
+            }
+            
+        } catch (Exception e) {
+            // Maneja la excepción con un mensaje más específico
+            System.err.println("Error al ejecutar la consulta en combobox Catg serv: " + e.getMessage());
+        }
+        
+        return lista;
+    }
+ 
+        
           
         
 }

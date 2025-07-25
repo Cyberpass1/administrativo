@@ -307,6 +307,38 @@ public boolean stateFactura(int estado, int id) {
 }
 
 
+public boolean inactivarProveedor(int estado, int id) {
+    String sql = "UPDATE table_proveedor SET estado=? WHERE id_proveedor =?";
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, estado);
+        ps.setInt(2, id);
+        int rowsUpdated = ps.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.toString());
+        return false;
+    }
+}
+
+
+
+
+public boolean inactivarGasto(int estado, int id) {
+    String sql = "UPDATE table_gastos SET id_estado=? WHERE id_gasto =?";
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, estado);
+        ps.setInt(2, id);
+        int rowsUpdated = ps.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.toString());
+        return false;
+    }
+}
+
+
 
         
 }
